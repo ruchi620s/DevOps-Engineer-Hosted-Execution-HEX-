@@ -1,0 +1,203 @@
+Excellent — this is a DevOps Engineer (HEX Team, Amazon GRID) role, and based on the description, the interview will focus on AWS, Linux/Unix, automation, troubleshooting, and scripting, as well as behavioral and customer-obsession competencies.
+
+Here’s a comprehensive set of all possible interview questions, organized by topic areas.
+
+🧩 1. Technical Fundamentals
+Linux / Unix
+
+Explain the Linux boot process.
+
+What are common Linux performance troubleshooting commands you use?
+
+How do you find which process is consuming the most memory/CPU?
+
+How would you monitor disk usage and identify large files?
+
+What is the difference between hard link and soft link?
+
+How do you secure a Linux system?
+
+How would you troubleshoot high load average on a Linux machine?
+
+How do you check network connectivity from a Unix host to another host?
+
+🧰 2. Scripting / Automation
+Python / Shell / Bash
+
+Write a script to monitor disk usage and send an alert if usage exceeds 80%.
+
+How would you parse logs and extract error counts using Bash?
+
+How do you handle exceptions in Python scripts used for automation?
+
+Give an example where you automated a manual DevOps process.
+
+What’s the difference between a Bash script and a Python automation approach?
+
+How do you schedule scripts to run automatically on Linux?
+
+Explain how you’d use subprocess or os modules in Python for system automation.
+
+☁️ 3. AWS Cloud & Infrastructure
+AWS Services
+
+What AWS services have you worked with?
+
+Explain how EC2, S3, and Lambda interact in a deployment pipeline.
+
+How would you set up monitoring for EC2 instances?
+
+How can you automate infrastructure creation in AWS?
+
+Explain what CloudFormation or Terraform does.
+
+What’s the difference between IAM Role, User, and Policy?
+
+How would you troubleshoot an EC2 instance that is unreachable via SSH?
+
+How do you implement high availability in AWS?
+
+🧮 4. Networking
+
+Explain the OSI model layers and which ones DevOps engineers deal with most.
+
+How would you troubleshoot when a service is not reachable from another host?
+
+What’s the difference between public and private subnets?
+
+How does DNS resolution work in AWS?
+
+What are VPC, Subnets, Route Tables, Security Groups, and NACLs?
+
+Explain how load balancing works (Application Load Balancer vs Network Load Balancer).
+
+⚙️ 5. CI/CD and DevOps Tools
+
+What CI/CD tools have you worked with (Jenkins, GitLab, etc.)?
+
+How would you debug a failed pipeline build?
+
+How do you ensure security and quality in your CI/CD pipeline?
+
+Explain how artifacts are managed and promoted between environments.
+
+What’s your approach to automating deployment rollbacks?
+
+How do you integrate SonarQube or Black Duck for code quality?
+
+How do you manage environment-specific configurations in pipelines?
+
+🐳 6. Containers and Infrastructure as Code
+
+What’s the difference between Docker image and container?
+
+Explain how you’d build and deploy a containerized application.
+
+How would you troubleshoot a failing container?
+
+What is Docker Compose and how does it help?
+
+How do you manage secrets inside containers?
+
+What’s the purpose of Kubernetes and when would you use it?
+
+How do you deploy services to EKS or ECS?
+
+💾 7. Monitoring and Maintenance
+
+How do you monitor system performance and application health?
+
+What tools or AWS services do you use for monitoring (CloudWatch, Prometheus, Grafana)?
+
+How would you detect and prevent outages?
+
+Explain a time you identified an issue before it became an outage.
+
+How do you collect and analyze logs (CloudWatch Logs, ELK, etc.)?
+
+How do you handle on-call rotations and incident responses?
+
+🧠 8. Troubleshooting and Debugging
+
+A customer reports their API is slow — how do you approach this issue?
+
+A pipeline that was working yesterday suddenly fails — what’s your first step?
+
+EC2 instance is not accessible — what steps do you take to diagnose?
+
+How do you debug network latency issues?
+
+How would you troubleshoot a high memory leak in a production service?
+
+Explain a time when you resolved a critical incident quickly.
+
+🧩 9. Software Development Fundamentals
+
+Explain the difference between compiled and interpreted languages.
+
+What is version control and why is it important?
+
+How do you manage dependencies in a software project?
+
+What’s the difference between REST and SOAP APIs?
+
+How do you test a new feature before deploying it?
+
+🤝 10. Customer Support & Communication
+
+How do you handle difficult customer escalations?
+
+Tell me about a time you had to explain a complex technical issue to a non-technical stakeholder.
+
+How do you balance supporting customers and working on internal projects?
+
+Describe a time you improved developer productivity through automation.
+
+How do you prioritize tasks when multiple customer issues arise?
+
+🚀 11. Behavioral / Amazon Leadership Principles
+
+Expect STAR-format (Situation, Task, Action, Result) questions reflecting Amazon’s 16 Leadership Principles.
+Here are the most common ones for DevOps roles:
+
+Tell me about a time you owned a production issue end-to-end. (Ownership)
+
+Describe a time you took the initiative to automate a recurring task. (Invent and Simplify)
+
+Tell me about a time you disagreed with your manager on a technical decision. (Have Backbone; Disagree and Commit)
+
+Tell me about a time you worked with limited data to make a decision. (Bias for Action)
+
+Give an example of how you improved the customer experience. (Customer Obsession)
+
+Tell me about your biggest failure and what you learned. (Learn and Be Curious)
+
+Describe a time you helped another team improve their process. (Earn Trust)
+
+Tell me about a time you improved operational efficiency. (Deliver Results)
+
+🔐 12. Security and Reliability
+
+How do you manage secrets and credentials in CI/CD pipelines?
+
+What is the principle of least privilege?
+
+How do you secure an S3 bucket?
+
+Explain IAM best practices.
+
+What’s your approach to patch management?
+
+How would you set up audit logging in AWS?
+
+🧩 13. Miscellaneous (Common in Amazon Interviews)
+
+Why do you want to work at the Amazon / HEX team?
+
+What does “customer obsession” mean to you in a DevOps context?
+
+Describe your most challenging project.
+
+How do you stay updated with the latest DevOps tools and technologies?
+
+What are your long-term career goals in DevOps?
