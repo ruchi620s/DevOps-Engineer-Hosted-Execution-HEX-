@@ -1,0 +1,226 @@
+Perfect ✅ — let’s now **narrow this down to the 30 most likely questions** that Amazon’s **Hosted Execution (HEX) DevOps Engineer** panel will ask, and I’ll divide them into:
+
+* **A. Technical (Core DevOps & AWS) — 20 Questions**
+* **B. Behavioral (Amazon Leadership Principles) — 10 Questions**
+  Each includes **what they’re testing** and **how to answer effectively** (you can later practice with STAR examples).
+
+---
+
+## 🧩 **A. Technical Section (20 Key Questions)**
+
+### **1. Explain how you would troubleshoot a high CPU utilization issue on a Linux server.**
+
+👉 Tests: Problem-solving, Linux performance debugging.
+🧠 Answer: Start with `top`, `htop`, `pidstat`, `iostat`, identify process → check logs → optimize or restart → add monitoring.
+
+---
+
+### **2. How do you ensure high availability of applications deployed in AWS?**
+
+👉 Tests: AWS infrastructure design.
+🧠 Mention: Multi-AZ deployments, Load Balancer, Auto Scaling, CloudWatch alarms, Route 53 health checks, S3 versioning.
+
+---
+
+### **3. What’s the difference between a security group and a network ACL in AWS?**
+
+👉 Tests: Networking fundamentals.
+🧠 SG = instance-level, stateful; NACL = subnet-level, stateless. Both used to control inbound/outbound traffic.
+
+---
+
+### **4. Describe your experience with CI/CD tools. How do you handle pipeline failures?**
+
+👉 Tests: CI/CD troubleshooting, ownership.
+🧠 Example: GitLab or Jenkins → review logs, re-run jobs with debug mode, rollback failed deploys, automate retry logic.
+
+---
+
+### **5. How do you automate infrastructure provisioning?**
+
+👉 Tests: IaC skills.
+🧠 Use Terraform/CloudFormation/Ansible → declare infra as code → version control → automate via pipeline → review plan before apply.
+
+---
+
+### **6. Explain how you manage secrets in a CI/CD pipeline.**
+
+👉 Tests: Security best practices.
+🧠 Use AWS Secrets Manager / SSM Parameter Store / Vault, never hardcode secrets, use IAM roles for access.
+
+---
+
+### **7. What are your go-to Linux commands for network debugging?**
+
+👉 Tests: Troubleshooting basics.
+🧠 `ping`, `netstat`, `ss`, `traceroute`, `dig`, `curl`, `tcpdump`. Mention how you isolate DNS vs routing vs port issues.
+
+---
+
+### **8. How would you troubleshoot an EC2 instance that is not reachable via SSH?**
+
+👉 Tests: AWS debugging flow.
+🧠 Check: Security Group → NACL → Route Table → Instance Status → Key pair → SSH service → System logs → SSM Session Manager.
+
+---
+
+### **9. Describe a time when you automated a manual task.**
+
+👉 Tests: Scripting & initiative.
+🧠 Mention Python/Shell script for backups, deployments, log cleanup, or EC2 auto-start/stop.
+
+---
+
+### **10. What’s the difference between Docker image and container?**
+
+👉 Tests: Container fundamentals.
+🧠 Image = blueprint; Container = running instance. Mention layering, immutability, portability.
+
+---
+
+### **11. How would you monitor a fleet of servers for performance and outages?**
+
+👉 Tests: Monitoring strategy.
+🧠 AWS CloudWatch, Prometheus, Grafana, alarms, metrics (CPU, Memory, Disk), log aggregation (CloudWatch Logs / ELK).
+
+---
+
+### **12. What’s your approach to troubleshooting a slow application running on AWS?**
+
+👉 Tests: Systematic debugging.
+🧠 Step-by-step: Metrics → Network latency → App logs → DB performance → Scaling → Caching (CloudFront, Redis).
+
+---
+
+### **13. How do you implement blue-green or canary deployments?**
+
+👉 Tests: Deployment strategy knowledge.
+🧠 Two identical environments → route traffic gradually → rollback easily → use Route 53 / Load Balancer weighting.
+
+---
+
+### **14. Explain IAM best practices.**
+
+👉 Tests: Security knowledge.
+🧠 Principle of least privilege, role-based access, MFA, no root access, password policies, audit via CloudTrail.
+
+---
+
+### **15. How do you use CloudWatch or similar tools to prevent outages?**
+
+👉 Tests: Proactive monitoring.
+🧠 Use metrics + alarms + automation (Lambda remediation), dashboards, anomaly detection.
+
+---
+
+### **16. Describe your process when handling customer-reported issues in production.**
+
+👉 Tests: Support mindset, calmness under pressure.
+🧠 Gather logs, reproduce, mitigate quickly, communicate, RCA, automate detection/prevention.
+
+---
+
+### **17. How do you maintain configuration consistency across multiple environments?**
+
+👉 Tests: Configuration management.
+🧠 Ansible/Chef, environment variables, templates, GitOps model, tagging and versioning.
+
+---
+
+### **18. Explain how you would secure S3 buckets and EC2 instances.**
+
+👉 Tests: Security & AWS fundamentals.
+🧠 Use private ACLs, IAM policies, encryption (KMS), logging, VPC endpoints, patch EC2s.
+
+---
+
+### **19. What’s your experience with version control (Git)?**
+
+👉 Tests: Collaboration & coding basics.
+🧠 Branching, PRs, merge conflicts, hooks in pipelines, tagging releases.
+
+---
+
+### **20. How do you handle on-call incidents and prevent recurrence?**
+
+👉 Tests: Operational excellence.
+🧠 Incident management, postmortems, automation, alert thresholds, documentation.
+
+---
+
+## 💬 **B. Behavioral Section (10 Key Leadership Principle Questions)**
+
+These are **guaranteed** in Amazon interviews — use the **STAR method (Situation, Task, Action, Result)**.
+
+---
+
+### **1. Tell me about a time you took ownership of a production issue.**
+
+👉 LP: *Ownership*
+🧠 Example: Diagnosed failing CI/CD job → found memory leak → automated cleanup → reduced failures by X%.
+
+---
+
+### **2. Describe a time you improved a process through automation.**
+
+👉 LP: *Invent and Simplify*
+🧠 Example: Automated VM creation using Ansible → reduced provisioning time from 2 hours to 10 minutes.
+
+---
+
+### **3. Tell me about a time you identified a problem before it caused an outage.**
+
+👉 LP: *Bias for Action*
+🧠 Example: Found disk space spike in logs → set up alert and auto-cleanup → prevented downtime.
+
+---
+
+### **4. Describe a situation where you had conflicting priorities. How did you handle it?**
+
+👉 LP: *Deliver Results*
+🧠 Example: Managed urgent customer issue while finishing migration → prioritized impact → communicated timeline → delivered both.
+
+---
+
+### **5. Tell me about a time you had to deal with an uncooperative teammate or stakeholder.**
+
+👉 LP: *Earn Trust* / *Have Backbone; Disagree and Commit*
+🧠 Example: Proposed CI/CD change → faced pushback → presented data → reached consensus.
+
+---
+
+### **6. Give an example of how you improved customer experience.**
+
+👉 LP: *Customer Obsession*
+🧠 Example: Built dashboard for customer issue tracking → reduced response time → improved satisfaction.
+
+---
+
+### **7. Tell me about a time you learned a new technology to solve a problem.**
+
+👉 LP: *Learn and Be Curious*
+🧠 Example: Learned Terraform to replace manual AWS provisioning → deployed IaC successfully.
+
+---
+
+### **8. Describe a time you worked under pressure.**
+
+👉 LP: *Deliver Results / Ownership*
+🧠 Example: Production outage → identified root cause quickly → restored services within SLA.
+
+---
+
+### **9. Tell me about a time you made a mistake. What did you learn?**
+
+👉 LP: *Dive Deep / Learn and Be Curious*
+🧠 Example: Misconfigured security rule → caused temporary outage → implemented validation scripts.
+
+---
+
+### **10. Tell me about your most challenging project and how you managed it.**
+
+👉 LP: *Dive Deep / Bias for Action / Deliver Results*
+🧠 Example: Cross-team migration project with tight deadline → coordinated, automated, documented → successful rollout.
+
+---
+
