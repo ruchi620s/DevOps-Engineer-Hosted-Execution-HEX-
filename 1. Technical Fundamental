@@ -1,0 +1,227 @@
+🧩 1. Explain the Linux boot process
+
+Purpose: Checks your understanding of what happens when a Linux machine starts up.
+
+Phases of Boot Process:
+
+BIOS/UEFI Initialization:
+
+System hardware (CPU, RAM, Disk, etc.) is initialized.
+
+BIOS reads the Master Boot Record (MBR) or EFI partition.
+
+Boot Loader (GRUB/LILO):
+
+Bootloader (usually GRUB) loads the kernel into memory.
+
+Lets you choose OS/version if multiple kernels exist.
+
+Kernel Initialization:
+
+The kernel initializes device drivers, mounts the root filesystem, and starts PID 1 (the first process).
+
+init or systemd:
+
+This starts all background services (daemons) and mounts file systems.
+
+systemd is common on modern systems (/etc/systemd/system units).
+
+Runlevel / Target:
+
+Determines which services start (multi-user, graphical, etc.).
+
+Login Prompt:
+
+Finally, getty or login starts user session at terminal or GUI.
+
+Tip: Know how to use commands like systemctl, dmesg, and journalctl for boot-related issues.
+
+🧩 2. What are common Linux performance troubleshooting commands you use?
+
+Purpose: Evaluates your familiarity with system health monitoring tools.
+
+Purpose	Command	Description
+CPU usage	top, htop, mpstat	Real-time process & CPU stats
+Memory usage	free -m, vmstat, smem	Memory/swap usage
+Disk I/O	iostat, iotop, df -h	Disk throughput and usage
+Processes	ps -ef, pidstat, pstree	Running processes and stats
+Network	ss -tuln, netstat -an, iftop	Connections and bandwidth
+System logs	dmesg, journalctl -xe	Kernel and system messages
+General health	uptime, sar, nmon	Load averages and trends
+🧩 3. How do you find which process is consuming the most memory/CPU?
+
+Approach:
+
+Using top or htop:
+
+top
+
+
+Sort by %CPU or %MEM by pressing keys P or M.
+
+htop gives a better color-coded, interactive view.
+
+Using ps:
+
+ps aux --sort=-%mem | head
+ps aux --sort=-%cpu | head
+
+
+Lists top processes consuming memory or CPU.
+
+Using pidstat:
+
+pidstat -u 1 5
+
+
+Monitors per-process CPU usage over time.
+
+Next steps: Once identified, check logs or configurations for that process.
+
+🧩 4. How would you monitor disk usage and identify large files?
+
+Commands:
+
+Overall Disk Usage:
+
+df -h
+
+
+Shows filesystem usage in human-readable format.
+
+Per-directory usage:
+
+du -h --max-depth=1 /
+
+
+Shows size of each directory under /.
+
+Find large files:
+
+find / -type f -size +500M -exec ls -lh {} \;
+
+
+Lists files larger than 500MB.
+
+Interactive tools:
+
+ncdu → Disk usage visualizer (install via sudo apt install ncdu).
+
+Pro Tip: Always check /var/log, /tmp, and user home directories for unexpected large files.
+
+🧩 5. What is the difference between a hard link and a soft link?
+Feature	Hard Link	Soft Link (Symbolic Link)
+Points to	Actual data (inode)	Path of another file
+Deletion impact	Original file deleted → hard link still works	Target deleted → symlink broken
+Cross-filesystem	Not allowed	Allowed
+Command	ln file1 file2	ln -s file1 file2
+Example	Two names for same data block	Shortcut-like reference
+
+Example:
+
+ln original.txt hardlink.txt
+ln -s original.txt softlink.txt
+
+🧩 6. How do you secure a Linux system?
+
+Key Steps:
+
+User and Permission Management:
+
+Use least privilege.
+
+Manage /etc/sudoers carefully.
+
+SSH Hardening:
+
+Disable root login (PermitRootLogin no).
+
+Use key-based authentication.
+
+Update System Regularly:
+
+sudo apt update && sudo apt upgrade
+
+
+Firewall:
+
+Use ufw or iptables to control ports.
+
+Disable Unnecessary Services:
+
+systemctl list-unit-files --type=service
+
+
+Audit and Logs:
+
+Monitor /var/log/auth.log, dmesg.
+
+Use tools like auditd or fail2ban.
+
+File Permissions & SELinux/AppArmor:
+
+Enforce policies to prevent unauthorized access.
+
+🧩 7. How would you troubleshoot high load average on a Linux machine?
+
+Meaning: Load average = number of processes waiting for CPU or I/O.
+
+Steps:
+
+Check load:
+
+uptime
+
+
+Identify top CPU/I/O processes:
+
+top, iostat, vmstat
+
+
+Check memory pressure or swap usage:
+
+free -m
+
+
+Check disk I/O bottlenecks:
+
+iotop, iostat -xz 1
+
+
+Check zombie or stuck processes:
+
+ps aux | grep 'Z'
+
+
+Check for excessive logging or cron jobs.
+
+Correlate with system logs:
+
+journalctl -xe
+
+
+Root causes can include:
+
+CPU saturation, memory leaks, disk bottlenecks, unoptimized app code, runaway processes.
+
+🧩 8. How do you check network connectivity from a Unix host to another host?
+
+Basic tools:
+
+Tool	Purpose	Example
+ping	Checks ICMP reachability	ping google.com
+curl / wget	Test HTTP connectivity	curl -I https://example.com
+telnet / nc	Test specific port	telnet 10.0.0.1 22 or nc -zv host 80
+traceroute	Shows network path	traceroute 8.8.8.8
+dig	DNS resolution	dig example.com
+ss / netstat	Show open connections	ss -tuln
+
+Example troubleshooting flow:
+
+Ping → confirm host reachable.
+
+Curl → confirm application port accessible.
+
+Traceroute → check where packet drops.
+
+Verify firewall rules (Security Groups, NACLs).
