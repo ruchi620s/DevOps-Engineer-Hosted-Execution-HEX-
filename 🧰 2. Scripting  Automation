@@ -1,0 +1,205 @@
+2. Scripting / Automation
+1️⃣ Write a script to monitor disk usage and send an alert if usage exceeds 80%.
+
+What they’re testing:
+Basic Bash scripting, file system commands, conditional checks, and alerting logic.
+
+Example (Bash):
+
+#!/bin/bash
+THRESHOLD=80
+EMAIL="admin@example.com"
+
+df -hP | awk 'NR>1 {print $5 " " $6}' | while read output
+do
+  usage=$(echo $output | awk '{print $1}' | sed 's/%//')
+  partition=$(echo $output | awk '{print $2}')
+  if [ $usage -ge $THRESHOLD ]; then
+    echo "Warning: Disk usage on $partition is at ${usage}%" | \
+    mail -s "Disk Alert: $partition usage high" $EMAIL
+  fi
+done
+
+
+Key points to mention:
+
+Uses df -hP for portable disk usage output.
+
+Parses usage with awk.
+
+Sends email alert (can also integrate Slack or SNS).
+
+Can be scheduled via cron for periodic checks.
+
+Python alternative:
+
+import shutil, smtplib
+total, used, free = shutil.disk_usage("/")
+usage = used / total * 100
+if usage > 80:
+    print(f"Alert: Disk usage at {usage:.2f}%")
+
+2️⃣ How would you parse logs and extract error counts using Bash?
+
+What they’re testing:
+Your ability to manipulate text and extract metrics — core for DevOps log analysis.
+
+Example 1: Count “ERROR” in logs
+
+grep -i "error" /var/log/syslog | wc -l
+
+
+Example 2: Count errors by hour
+
+grep -i "error" /var/log/app.log | awk '{print $2}' | cut -d: -f1 | sort | uniq -c
+
+
+Example 3: Extract specific error messages
+
+awk '/ERROR/ {print $0}' /var/log/app.log
+
+
+Interview tip:
+Mention you use tools like grep, awk, sed, and cut, and for large-scale logs, you prefer ELK / CloudWatch Logs Insights / Splunk queries.
+
+3️⃣ How do you handle exceptions in Python scripts used for automation?
+
+What they’re testing:
+Whether you write resilient automation code that doesn’t crash on failure.
+
+Key concept: Use try / except / finally blocks.
+
+Example:
+
+try:
+    file = open("data.txt", "r")
+    data = file.read()
+except FileNotFoundError:
+    print("Error: data.txt not found!")
+except Exception as e:
+    print(f"Unexpected error: {e}")
+finally:
+    if 'file' in locals():
+        file.close()
+
+
+Best practices:
+
+Handle specific exceptions (not just generic except:).
+
+Log errors instead of only printing (logging module).
+
+Use retry logic for network or API calls (tenacity or custom loops).
+
+Return exit codes in automation pipelines.
+
+4️⃣ Give an example where you automated a manual DevOps process.
+
+What they’re testing:
+Your real-world automation experience — this is a high-value behavioral-technical question.
+
+Example answer (from your experience):
+
+“At Siemens Gamesa, we had to manually create test VMs for multiple teams.
+I wrote a Python + Ansible automation that took parameters (OS, CPU, memory) from Jenkins input, automatically created the VM using VMware API, installed required packages, and shared access details with the team.
+This reduced provisioning time from ~1 hour to under 10 minutes.”
+
+Key points to emphasize:
+
+What was manual before
+
+Tools/languages used (Python, Ansible, Jenkins, API)
+
+Time saved or impact created
+
+Reliability improvement (no manual errors)
+
+5️⃣ What’s the difference between a Bash script and a Python automation approach?
+Feature	Bash	Python
+Best for	System-level tasks (file ops, text parsing)	Complex logic, API calls, data processing
+Syntax	Simple, lightweight	More readable, structured
+Performance	Faster for short tasks	Better for long-running or logic-heavy tasks
+Libraries	Limited (system commands)	Extensive libraries (boto3, paramiko, etc.)
+Example use	Backup, cron jobs, quick commands	AWS automation, monitoring scripts, APIs
+
+Answer tip:
+
+“I prefer Bash for system-level quick tasks and Python when the automation involves logic, conditionals, or external API integrations.”
+
+6️⃣ How do you schedule scripts to run automatically on Linux?
+
+What they’re testing:
+Your knowledge of cron jobs and Linux scheduling.
+
+Using crontab:
+
+crontab -e
+
+
+Add a line:
+
+0 * * * * /home/ec2-user/scripts/disk_check.sh
+
+
+→ Runs every hour at 0 minutes.
+
+Check status:
+
+crontab -l
+systemctl status cron
+
+
+Other tools:
+
+at for one-time jobs.
+
+systemd timers for modern systems (preferred on Amazon Linux 2).
+
+Jenkins/GitLab CI schedulers for pipeline-based jobs.
+
+7️⃣ Explain how you’d use subprocess or os modules in Python for system automation.
+
+Purpose: Integrate system commands in Python scripts.
+
+Using os module:
+import os
+os.system("ls -l /home")
+
+
+→ Executes directly, but only returns exit status (not output).
+
+Using subprocess (preferred):
+import subprocess
+result = subprocess.run(["df", "-h"], capture_output=True, text=True)
+print(result.stdout)
+
+
+Why subprocess is better:
+
+Captures stdout/stderr.
+
+Doesn’t invoke shell by default (more secure).
+
+Can handle timeouts, piping, and error handling.
+
+Example (Advanced):
+
+try:
+    subprocess.run(["ping", "-c", "2", "google.com"], check=True)
+except subprocess.CalledProcessError:
+    print("Ping failed!")
+
+
+In interviews:
+Mention you use subprocess for safe command execution and integrate it in CI/CD scripts for system checks or deployments.
+
+✅ Summary Cheat Table
+
+Skill	Key Tools / Concepts	Example
+Disk monitor	df, Bash loop, mail	if usage > 80% send alert
+Log parser	grep, awk, sed	Count “ERROR” lines
+Exception handling	try/except/finally	Catch network/file errors
+Automation example	Python + Ansible + Jenkins	VM provisioning
+Bash vs Python	Lightweight vs Structured	Depends on complexity
+Scheduling	cron, systemd timer	Automated job
+Python system automation	subprocess, os	Run shell commands safely
