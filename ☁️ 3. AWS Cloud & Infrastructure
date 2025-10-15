@@ -1,0 +1,224 @@
+☁️ 3. AWS Cloud & Infrastructure
+1️⃣ What AWS services have you worked with?
+
+Purpose: See if you’ve had hands-on AWS exposure relevant to the role.
+
+How to answer:
+List core AWS services, but structure by use case instead of just naming them.
+
+✅ Example Answer:
+
+“I’ve primarily worked with EC2 for compute, S3 for storage, IAM for access control, CloudWatch for monitoring, and Lambda for automation.
+For CI/CD and infrastructure automation, I’ve used CodeBuild, CodeDeploy, CloudFormation, and Terraform.
+I’ve also integrated Route53, VPC, and ELB for high availability and DNS management.”
+
+Tip: Mention services that match HEX team focus areas — compute, automation, monitoring, and developer productivity.
+
+2️⃣ Explain how EC2, S3, and Lambda interact in a deployment pipeline.
+
+Purpose: Tests if you can connect services together logically.
+
+Scenario Example:
+
+EC2: Hosts the main application or build agent (e.g., Jenkins runner).
+
+S3:
+
+Stores artifacts (build files, backups, logs).
+
+Holds deployment packages or Lambda ZIPs.
+
+Lambda:
+
+Automates deployment steps (e.g., trigger after upload to S3).
+
+Executes serverless tasks like file validation or notification.
+
+Flow Example:
+
+Code → Build → Artifact to S3 → Lambda triggered → Deploy to EC2 → Logs → CloudWatch
+
+Key services: CodePipeline, CodeDeploy, IAM, CloudWatch Events (for triggers).
+
+3️⃣ How would you set up monitoring for EC2 instances?
+
+Purpose: Evaluates your operational monitoring strategy.
+
+Core Tools:
+
+Amazon CloudWatch Metrics:
+
+CPUUtilization, DiskReadOps, NetworkIn, etc.
+
+Custom metrics (memory, disk via CloudWatch Agent).
+
+sudo amazon-cloudwatch-agent-config-wizard
+sudo systemctl start amazon-cloudwatch-agent
+
+
+CloudWatch Alarms:
+
+Trigger alerts (email/SNS) when thresholds exceeded.
+
+aws cloudwatch put-metric-alarm --alarm-name HighCPU \
+--metric-name CPUUtilization --namespace AWS/EC2 \
+--statistic Average --period 300 --threshold 80 \
+--comparison-operator GreaterThanThreshold \
+--dimensions Name=InstanceId,Value=i-123456 \
+--evaluation-periods 2 --alarm-actions <sns-topic-arn>
+
+
+CloudWatch Logs:
+
+Install CloudWatch Agent to push system/application logs.
+
+EC2 Status Checks:
+
+AWS auto-monitors hardware and network-level issues.
+
+Pro Tip:
+Mention CloudWatch Dashboards, SNS for alerting, and AWS Systems Manager (SSM) for remote management and health checks.
+
+4️⃣ How can you automate infrastructure creation in AWS?
+
+Purpose: Tests Infrastructure as Code (IaC) understanding.
+
+✅ Answer Approach:
+
+“Infrastructure can be automated using AWS CloudFormation or Terraform, both of which define resources as code.
+Instead of manually provisioning via the console, I define configuration in templates (.yml / .tf) and deploy consistently across environments.”
+
+Examples:
+
+EC2 instance definition in CloudFormation:
+
+Resources:
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t3.micro
+      ImageId: ami-0abcd1234
+
+
+Terraform equivalent:
+
+resource "aws_instance" "example" {
+  ami           = "ami-0abcd1234"
+  instance_type = "t3.micro"
+}
+
+
+Automation tools:
+Terraform, CloudFormation, CDK (Cloud Development Kit), Ansible with boto3, Jenkins pipelines.
+
+5️⃣ Explain what CloudFormation or Terraform does.
+
+Purpose: Tests deep understanding of Infrastructure as Code (IaC) concept.
+
+Tool	Description	Key Benefit
+CloudFormation	AWS-native IaC tool using YAML/JSON templates	Deep AWS integration
+Terraform	Open-source, multi-cloud IaC tool using HCL (HashiCorp Configuration Language)	Cloud-agnostic, reusable modules
+
+Key Concepts to Mention:
+
+Declarative model: define desired state.
+
+Version control integration (Git).
+
+Automated provisioning, updates, rollback.
+
+Reusability via stacks (CloudFormation) or modules (Terraform).
+
+Pro Tip: Amazon interviewers like when you mention change automation + drift detection:
+
+“I prefer Terraform for multi-cloud use and CloudFormation for deep AWS integration where I can leverage stack policies and nested stacks.”
+
+6️⃣ What’s the difference between IAM Role, User, and Policy?
+Term	Description	Example
+User	Individual identity (person/service) with credentials	ruchi.sharma@company.com
+Role	Temporary identity with permissions, assumed by a user/service	EC2 instance role for S3 access
+Policy	JSON document defining permissions (attached to users/roles/groups)	"Action": "s3:*", "Resource": "*"
+
+Example use case:
+
+User: human logging in to console.
+
+Role: Lambda function accessing DynamoDB.
+
+Policy: Defines what actions (GetObject, PutObject) are allowed.
+
+Pro Tip:
+Explain how roles eliminate hardcoded credentials and enable least privilege principle.
+
+7️⃣ How would you troubleshoot an EC2 instance that is unreachable via SSH?
+
+Purpose: Tests systematic problem-solving under real AWS conditions.
+
+Step-by-step approach:
+
+Security Group:
+
+Ensure inbound rule allows port 22 from your IP.
+
+Outbound allowed to all.
+
+Network ACL:
+
+Check subnet-level rules (allow inbound/outbound 22).
+
+Route Table:
+
+Verify route to Internet Gateway for public subnets.
+
+Elastic IP / Private IP:
+
+Confirm correct IP and DNS resolution.
+
+Key Pair / Permissions:
+
+chmod 400 mykey.pem
+ssh -i mykey.pem ec2-user@<public_ip>
+
+
+Instance State:
+
+Check EC2 Console → System Status Checks.
+
+Use SSM Session Manager:
+
+If no SSH access, connect via SSM agent (no open ports needed).
+
+Check Logs:
+
+View EC2 console → Actions → Instance Settings → Get System Log.
+
+8️⃣ How do you implement high availability in AWS?
+
+Purpose: Tests your understanding of redundancy and fault tolerance.
+
+Key concepts:
+
+Area	Strategy
+Compute (EC2)	Deploy across multiple Availability Zones with Auto Scaling
+Load Balancing	Use Application Load Balancer (ALB) or Network Load Balancer (NLB)
+Storage	S3 (11 9’s durability), EBS snapshots, EFS for shared data
+Database	RDS Multi-AZ or Aurora Global Clusters
+DNS	Route 53 health checks and failover routing
+Serverless	Lambda automatically handles HA
+Infrastructure	Use IaC for reproducible, resilient deployments
+
+Example Answer:
+
+“To ensure high availability, I deploy applications across multiple AZs, use an ALB for traffic distribution, Auto Scaling Groups for elasticity, and CloudWatch alarms for proactive health checks.
+Data is stored in S3 or RDS Multi-AZ to ensure durability and minimal downtime.”
+
+✅ Quick Summary Table
+
+Topic	Key AWS Tools / Concepts	Interview Tip
+AWS Experience	EC2, S3, Lambda, IAM, CloudWatch, CodePipeline	Group by use case
+EC2-S3-Lambda interaction	Pipeline + event-driven flow	Mention triggers
+EC2 Monitoring	CloudWatch metrics + agent	Alarms + dashboards
+Infra Automation	CloudFormation / Terraform	IaC + consistency
+IAM Concepts	User, Role, Policy	Least privilege
+EC2 SSH issue	SG → NACL → Route → SSM	Logical sequence
+High Availability	Multi-AZ, ALB, Auto Scaling	Redundancy everywhere
