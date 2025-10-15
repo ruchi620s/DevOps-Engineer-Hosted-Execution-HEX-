@@ -1,0 +1,200 @@
+🧮 4. Networking (for DevOps & AWS)
+1️⃣ Explain the OSI model layers and which ones DevOps engineers deal with most.
+
+The OSI (Open Systems Interconnection) model has 7 layers, each defining a level of network communication.
+
+Layer	Name	Description	DevOps Relevance
+7	Application	End-user layer (HTTP, SSH, DNS, SMTP)	Monitoring web services, API endpoints
+6	Presentation	Data formatting, encryption, compression (SSL/TLS)	Certificates, HTTPS setup
+5	Session	Manages connections and sessions (RPC, NetBIOS)	Less direct, handled by protocols
+4	Transport	Ensures reliable data transfer (TCP, UDP)	Debugging ports, latency, firewalls
+3	Network	Routing and addressing (IP, ICMP)	Subnets, VPC routing, ping, traceroute
+2	Data Link	Frames, MAC addressing (Ethernet, ARP)	Rarely managed directly in cloud
+1	Physical	Hardware, cables, switches	Abstracted in cloud environments
+
+✅ Most Relevant for DevOps:
+Layers 3, 4, and 7
+
+3: IP routing, subnets, NAT, VPCs
+
+4: Port management, security groups, load balancers
+
+7: HTTP(S) troubleshooting, DNS, API calls
+
+2️⃣ How would you troubleshoot when a service is not reachable from another host?
+
+Scenario: App server can’t reach DB or API endpoint.
+
+✅ Systematic Troubleshooting Flow:
+
+Check Network Connectivity
+
+ping <destination_ip>
+traceroute <destination_ip>
+
+
+If no response → check route table or NACLs.
+
+Check Port Accessibility
+
+telnet <host> <port>
+nc -zv <host> <port>
+
+
+Confirms whether the port is open (e.g., 22, 443, 5432).
+
+Security Group (SG)
+
+Inbound rule: allow from source host/VPC on specific port.
+
+Outbound rule: allow destination.
+
+Network ACLs
+
+Ensure subnet-level rules permit bidirectional traffic.
+
+Route Tables
+
+Confirm route exists to destination subnet, NAT, or Internet Gateway.
+
+DNS Resolution
+
+nslookup example.com
+dig example.com
+
+
+Verify domain resolves to correct IP.
+
+Service-Level Check
+
+Service may be down even if port open:
+
+systemctl status nginx
+curl -v http://localhost:8080
+
+
+✅ Pro Tip:
+End with the 5-layer mindset:
+
+“I start at network reachability (ping), move up to ports (telnet), then firewall (SG/NACL), DNS, and finally app/service logs.”
+
+3️⃣ What’s the difference between public and private subnets?
+Type	Description	Typical Use	Internet Access
+Public Subnet	Connected to an Internet Gateway (IGW)	Load balancers, bastion hosts, web servers	Direct (via IGW)
+Private Subnet	Connected to NAT Gateway / NAT Instance	Databases, internal APIs, back-end services	Indirect (via NAT)
+
+Example Architecture:
+
+VPC
+ ├── Public Subnet (ALB, Bastion)
+ │    └── Route → Internet Gateway
+ └── Private Subnet (EC2, RDS)
+      └── Route → NAT Gateway → Internet
+
+
+✅ Security Practice:
+Keep critical resources (DBs, caches) in private subnets with no inbound internet access.
+
+4️⃣ How does DNS resolution work in AWS?
+
+DNS = Domain Name System → translates domain names → IP addresses
+
+AWS DNS Flow (using Route 53 + VPC):
+
+DNS Query:
+User requests app.example.com.
+
+Route 53 Hosted Zone:
+Resolves domain to an A Record or CNAME → IP or ELB DNS.
+
+Resolver:
+VPC has built-in DNS resolver (e.g., AmazonProvidedDNS at VPC_CIDR + 2).
+
+Local Resolution:
+EC2 instance queries DNS (e.g., /etc/resolv.conf → points to AWS DNS server).
+
+Response:
+IP address returned → connection established.
+
+✅ Example:
+
+Public DNS (for internet-facing ALB)
+
+Private DNS (for internal services in VPC)
+
+Route 53 Alias records (ELB → domain)
+
+Private Hosted Zones (for internal name resolution)
+
+Troubleshooting Commands:
+
+dig app.example.com
+nslookup internal.service.local
+
+
+Pro Tip: Mention TTL (Time-to-Live) caching and alias records (AWS-specific DNS optimization).
+
+5️⃣ What are VPC, Subnets, Route Tables, Security Groups, and NACLs?
+
+This is a core AWS networking question — know these 5 components cold.
+
+Component	Description	Analogy	Key Points
+VPC (Virtual Private Cloud)	Isolated virtual network in AWS	Your private data center	CIDR range (e.g., 10.0.0.0/16)
+Subnet	Logical segment of a VPC (public/private)	Building inside your office	Each in one Availability Zone
+Route Table	Defines traffic routing rules	GPS map	Default route to IGW or NAT
+Security Group (SG)	Instance-level firewall	Door access control	Stateful (allows return traffic)
+Network ACL (NACL)	Subnet-level firewall	Security gate	Stateless (need both inbound/outbound rules)
+
+Example Relationship:
+
+VPC
+ ├── Subnet-A (public) → Route → IGW
+ │     └── EC2 (SG: allow 80/443)
+ └── Subnet-B (private) → Route → NAT
+       └── RDS (SG: allow 3306 from App SG)
+
+
+✅ Pro Tip:
+
+Security Groups are stateful (if inbound allowed, response automatically allowed),
+while NACLs are stateless (need explicit rules both ways).
+
+6️⃣ Explain how load balancing works (Application Load Balancer vs Network Load Balancer).
+
+Load balancer: Distributes traffic across multiple targets (EC2, containers, Lambda, etc.)
+
+Feature	Application Load Balancer (ALB)	Network Load Balancer (NLB)
+Layer	7 (HTTP/HTTPS)	4 (TCP/UDP)
+Routing	Based on content — path, host, headers	Based on IP and port
+Use Case	Web applications, microservices	High-performance, low-latency apps
+Health Checks	Application-level (HTTP 200 OK)	Network-level (TCP)
+Protocol Support	HTTP, HTTPS, WebSocket	TCP, UDP, TLS
+Integration	WAF, ECS, Lambda targets	PrivateLink, IoT, game servers
+Pricing	Slightly higher (more features)	Cheaper for raw performance
+
+Example Use:
+
+ALB:
+
+/api/* → backend service A
+
+/static/* → S3 or CloudFront
+
+NLB:
+
+Routes TCP traffic (e.g., DB proxy, custom protocol)
+
+✅ Pro Tip:
+In DevOps automation, mention:
+
+“I’ve configured ALB target groups via Terraform and used health checks for auto-deregistering unhealthy instances, improving uptime during deployments.”
+
+✅ Summary Cheat Table
+
+Topic	Core Concept	AWS Example
+OSI Model	L3–L4–L7 most relevant	VPC routing, SGs, HTTP services
+Troubleshooting	Ping → Port → SG → NACL → Route	EC2 ↔ RDS connectivity
+Public vs Private Subnet	IGW vs NAT	Web-tier vs DB-tier
+DNS Resolution	Route 53 + VPC Resolver	dig app.example.com
+VPC Components	VPC, Subnet, Route Table, SG, NACL	Core AWS networking
+Load Balancers	ALB (L7), NLB (L4)	API routing vs raw TCP
